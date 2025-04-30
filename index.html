@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft Quiz</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #fafafa;
+      }
+      .button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 5px;
+      }
+      .question {
+        margin: 20px 0;
+      }
+      .answers button {
+        display: block;
+        padding: 10px;
+        margin: 5px 0;
+        width: 100%;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        cursor: pointer;
+      }
+      .answers button:hover {
+        background-color: #ddd;
+      }
+      #timer {
+        font-size: 18px;
+        margin: 15px 0;
+        color: #d32f2f;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to the Minecraft Quiz!</h1>
+    <div id="timer"></div>
+    <button class="button" onclick="startQuiz('easy')">Start Easy Quiz</button>
+    <button class="button" onclick="startQuiz('medium')">
+      Start Medium Quiz
+    </button>
+    <button class="button" onclick="startQuiz('hard')">Start Hard Quiz</button>
+
+    <div id="quiz-container"></div>
+
+    <script>
+      const questions = {
+        easy: [
+          {
+            question: "What is the Minecraft world called?",
+            answers: ["Overworld", "End", "Nether"],
+            correct: "Overworld",
+          },
+          {
+            question:
+              "What is the main objective in Minecraft's survival mode?",
+            answers: [
+              "Build a mansion",
+              "Defeat the Ender Dragon",
+              "Explore the world",
+            ],
+            correct: "Defeat the Ender Dragon",
+          },
+          {
+            question: "Which of these is a Minecraft mob?",
+            answers: ["Zombie", "Dragon", "Phoenix"],
+            correct: "Zombie",
+          },
+          {
+            question: "Which tool is used to chop wood?",
+            answers: ["Pickaxe", "Shovel", "Axe"],
+            correct: "Axe",
+          },
+          {
+            question: "How many hearts does a player have in Minecraft?",
+            answers: ["5", "10", "20"],
+            correct: "10",
+          },
+          {
+            question: "Which mode lets you fly in Minecraft?",
+            answers: ["Survival", "Creative", "Adventure"],
+            correct: "Creative",
+          },
+          {
+            question: "What item is needed to make a torch?",
+            answers: [
+              "Stick and Coal",
+              "Wood and Flint",
+              "Stone and Blaze Rod",
+            ],
+            correct: "Stick and Coal",
+          },
+          {
+            question: "Which mob explodes when near the player?",
+            answers: ["Skeleton", "Zombie", "Creeper"],
+            correct: "Creeper",
+          },
+          {
+            question: "What happens at night in Minecraft?",
+            answers: ["Nothing", "Zombies spawn", "It rains always"],
+            correct: "Zombies spawn",
+          },
+          {
+            question: "What tool is used to mine stone faster?",
+            answers: ["Axe", "Sword", "Pickaxe"],
+            correct: "Pickaxe",
+          },
+        ],
+        medium: [
+          {
+            question: "What block teleports players?",
+            answers: ["End Portal", "Stone", "Water"],
+            correct: "End Portal",
+          },
+          {
+            question: "Which material is used to craft a Bed?",
+            answers: ["Wood and Wool", "Stone and Iron", "Gold and Wool"],
+            correct: "Wood and Wool",
+          },
+          {
+            question: "Which mob drops Ender Pearls?",
+            answers: ["Creeper", "Enderman", "Skeleton"],
+            correct: "Enderman",
+          },
+          {
+            question: "Which of the following is NOT an ore in Minecraft?",
+            answers: ["Coal", "Emerald", "Copper", "Bronze"],
+            correct: "Bronze",
+          },
+          {
+            question: "Which food item restores the most hunger?",
+            answers: ["Bread", "Cooked Beef", "Apple"],
+            correct: "Cooked Beef",
+          },
+          {
+            question: "What is required to activate a Nether Portal?",
+            answers: ["Lava Bucket", "Flint and Steel", "Torch"],
+            correct: "Flint and Steel",
+          },
+          {
+            question: "Which block is needed to enchant items?",
+            answers: ["Crafting Table", "Anvil", "Enchanting Table"],
+            correct: "Enchanting Table",
+          },
+          {
+            question:
+              "How many obsidian blocks are needed for a basic Nether Portal?",
+            answers: ["10", "12", "14"],
+            correct: "10",
+          },
+          {
+            question: "Which mob shoots arrows?",
+            answers: ["Zombie", "Skeleton", "Spider"],
+            correct: "Skeleton",
+          },
+          {
+            question: "Which item do you use to tame a wolf?",
+            answers: ["Bone", "Meat", "Fish"],
+            correct: "Bone",
+          },
+        ],
+        hard: [
+          {
+            question: "What is the max build height in Minecraft (1.18+)?",
+            answers: ["256", "320", "384"],
+            correct: "320",
+          },
+          {
+            question: "What is the name of the final boss in Minecraft?",
+            answers: ["Wither", "Ender Dragon", "Zombie King"],
+            correct: "Ender Dragon",
+          },
+          {
+            question: "How many ticks are there in one Minecraft day?",
+            answers: ["12000", "24000", "36000"],
+            correct: "24000",
+          },
+          {
+            question: "What is the rarest item drop in survival?",
+            answers: [
+              "Totem of Undying",
+              "Enchanted Golden Apple",
+              "Dragon Egg",
+            ],
+            correct: "Enchanted Golden Apple",
+          },
+          {
+            question: "How many blocks away can a Ghast detect a player?",
+            answers: ["64 blocks", "100 blocks", "128 blocks"],
+            correct: "100 blocks",
+          },
+          {
+            question: "Which potion gives you underwater breathing?",
+            answers: [
+              "Potion of Water Breathing",
+              "Potion of Night Vision",
+              "Potion of Healing",
+            ],
+            correct: "Potion of Water Breathing",
+          },
+          {
+            question: "How many strongholds generate per world (Java Edition)?",
+            answers: ["64", "128", "Infinite"],
+            correct: "128",
+          },
+          {
+            question: "Which update added bees to Minecraft?",
+            answers: ["1.14", "1.15", "1.16"],
+            correct: "1.15",
+          },
+          {
+            question: "What is the name of Minecraft’s creator?",
+            answers: ["Notch", "Jeb", "Steve"],
+            correct: "Notch",
+          },
+          {
+            question: "Which dimension has no day/night cycle?",
+            answers: ["End", "Overworld", "Nether"],
+            correct: "Nether",
+          },
+        ],
+      };
+
+      let currentQuestionIndex = 0;
+      let userScore = 0;
+      let currentLevel = "";
+      let timerInterval;
+      let timeLeft = 0;
+
+      function startQuiz(level) {
+        currentLevel = level;
+        currentQuestionIndex = 0;
+        userScore = 0;
+
+        if (level === "hard") {
+          timeLeft = 5 * 60;
+          startTimer();
+        } else {
+          clearInterval(timerInterval);
+          document.getElementById("timer").innerText = "";
+        }
+
+        displayQuestion();
+      }
+
+      function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            displayResults();
+          }
+        }, 1000);
+      }
+
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById("timer").innerText = `Time Left: ${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
+
+      function displayQuestion() {
+        const quizData = questions[currentLevel];
+        if (currentQuestionIndex < quizData.length) {
+          const questionData = quizData[currentQuestionIndex];
+          const quizContainer = document.getElementById("quiz-container");
+          quizContainer.innerHTML = `
+            <div class="question">
+              <h2>${questionData.question}</h2>
+              <div class="answers">
+                ${questionData.answers
+                  .map(
+                    (answer) =>
+                      `<button onclick="checkAnswer('${answer}')">${answer}</button>`
+                  )
+                  .join("")}
+              </div>
+            </div>
+          `;
+        } else {
+          displayResults();
+        }
+      }
+
+      function checkAnswer(answer) {
+        const quizData = questions[currentLevel];
+        if (answer === quizData[currentQuestionIndex].correct) {
+          userScore++;
+        }
+        currentQuestionIndex++;
+        displayQuestion();
+      }
+
+      function displayResults() {
+        clearInterval(timerInterval);
+        const quizContainer = document.getElementById("quiz-container");
+        quizContainer.innerHTML = `
+          <h2>Your score: ${userScore} / ${questions[currentLevel].length}</h2>
+          <button class="button" onclick="startQuiz(currentLevel)">Try Again</button>
+          <button class="button" onclick="window.location.reload()">Back to Home</button>
+        `;
+        document.getElementById("timer").innerText = "";
+      }
+    </script>
+  </body>
+</html>
